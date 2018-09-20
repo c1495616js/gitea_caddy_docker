@@ -1,5 +1,7 @@
 # Gitea+Mysql+Caddy by using Docker
 
+![](https://i.imgur.com/njWHb9f.png)
+
 ## start
 
 ```
