@@ -26,3 +26,12 @@ http:
       - "8880:80" // change port here
     ...
 ```
+## refs
+
+https://andrewzah.com/posts/selfhosting-git-with-gitea-docker-caddy/
+
+https://docs.gitea.io/en-us/install-with-docker/
+
+https://onlyhavecans.works/amy/gitea-docker
+
+
