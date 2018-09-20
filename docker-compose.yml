@@ -5,7 +5,7 @@ networks:
     external: false
 
 services:
-  server:
+  gitea:
     image: gitea/gitea:latest
     environment:
       - USER_UID=1000
@@ -33,3 +33,24 @@ services:
       - gitea
     volumes:
       - ./mysql:/var/lib/mysql
+  http:
+      build:
+        context: github.com/abiosoft/caddy-docker.git
+        args:
+          version: 0.10.12
+      volumes:
+        - type: bind
+          source: ./data/sites/
+          target: /var/www/sites/
+        - type: bind
+          source: ./data/caddypath/
+          target: /var/caddy/
+        - type: bind
+          source: ./Caddyfile
+          target: /etc/Caddyfile
+      environment:
+        CADDYPATH: "/var/caddy"      
+      ports:
+        - "443:443"
+        - "80:80"
+      restart: always
