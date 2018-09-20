@@ -1,4 +1,4 @@
-version: "2"
+version: "3.3"
 
 networks:
   gitea:
@@ -14,10 +14,12 @@ services:
     networks:
       - gitea
     volumes:
-      - ./gitea:/data
+      - type: bind
+        source: ./data/gitea
+        target: /data     
     ports:
-      - "3333:3000"
-      - "2222:22"
+      - "3000"
+      - "22:22"
     depends_on:
       - db
 
@@ -32,25 +34,27 @@ services:
     networks:
       - gitea
     volumes:
-      - ./mysql:/var/lib/mysql
+      - ./data/mysql:/var/lib/mysql
   http:
-      build:
-        context: github.com/abiosoft/caddy-docker.git
-        args:
-          version: 0.10.12
-      volumes:
-        - type: bind
-          source: ./data/sites/
-          target: /var/www/sites/
-        - type: bind
-          source: ./data/caddypath/
-          target: /var/caddy/
-        - type: bind
-          source: ./Caddyfile
-          target: /etc/Caddyfile
-      environment:
-        CADDYPATH: "/var/caddy"      
-      ports:
-        - "443:443"
-        - "80:80"
-      restart: always
+    build:
+      context: github.com/abiosoft/caddy-docker.git
+      args:
+        version: 0.10.12
+    volumes:
+      - type: bind
+        source: ./data/sites/
+        target: /var/www/sites/
+      - type: bind
+        source: ./data/caddypath/
+        target: /var/caddy/
+      - type: bind
+        source: ./Caddyfile
+        target: /etc/Caddyfile
+    environment:
+      CADDYPATH: "/var/caddy"      
+    ports:
+      - "443:443"
+      - "8880:80"     
+    restart: always
+    networks:
+      - gitea

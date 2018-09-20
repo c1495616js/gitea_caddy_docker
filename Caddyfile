@@ -1,3 +1,6 @@
-localhost {
-  proxy / http://git:3000
+http://localhost {
+  log / stdout "{host} {upstream}"
+  errors stdout
+
+  proxy / gitea:3000 
 }
